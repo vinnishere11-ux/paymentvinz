@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VINNZTAMVANN</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Poppins,sans-serif;color:#fff;overflow-x:hidden;background:#000;transition:.35s;position:relative;}
+#modeToggle{position:fixed;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:#222;display:flex;justify-content:center;align-items:center;cursor:pointer;z-index:9999;box-shadow:0 0 16px #fff;font-size:18px;}
+#modeToggle span{pointer-events:none;}
+
+.container{max-width:430px;margin:auto;padding:60px 20px 90px;display:flex;flex-direction:column;gap:34px;position:relative;z-index:2;}
+.title{text-align:center;font-size:30px;font-weight:700;letter-spacing:3px;background:linear-gradient(90deg,#00ffe7,#7cfffa,#ff4ecd,#6a5cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.desc{text-align:center;font-size:13px;color:#ff6b6b;line-height:1.6;}
+.card{padding:26px;border-radius:26px;background:rgba(0,0,0,.55);backdrop-filter:blur(22px);box-shadow:0 0 32px rgba(0,255,255,.35);text-align:center;position:relative;transition:.35s;}
+.copy-btn{margin-top:18px;padding:14px 36px;border:none;border-radius:50px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#00ffe7,#ff4ecd,#6a5cff);box-shadow:0 0 26px rgba(0,255,255,.75);transition:.2s;}
+.copy-btn:active{transform:scale(.92);}
+.qr-img{width:100%;max-width:320px;border-radius:20px;margin:20px auto 0;display:block;cursor:zoom-in;box-shadow:0 0 30px rgba(0,255,255,.55);}
+.qr-text{margin-top:22px;text-align:center;font-size:13px;line-height:1.6;opacity:.9;}
+.wa-box{margin-top:12px;padding:30px 22px;border-radius:28px;text-align:center;background:rgba(0,0,0,.6);text-decoration:none;color:white;position:relative;overflow:hidden;transition:.35s;}
+.wa-box::before{content:"";position:absolute;inset:-6px;background:linear-gradient(120deg,#00ffe7,#ff4ecd,#6a5cff,#00ffe7);filter:blur(30px);opacity:.9;z-index:-1;animation:flow 10s linear infinite;}
+@keyframes flow{to{transform:rotate(360deg);}}
+.footer{text-align:center;margin-top:24px;opacity:.85;font-size:14px;}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#00ffe7,#7cfffa);color:#000;padding:14px 26px;border-radius:30px;font-weight:700;opacity:0;transition:.3s;z-index:9999;}
+
+body.light{background:#9fc5f3;color:#000;}
+body.light .desc{color:#222;}
+body.light .card{background:rgba(255,255,255,0.6);box-shadow:0 8px 24px rgba(0,0,0,.15);color:#000;}
+body.light .copy-btn{background:linear-gradient(90deg,#3399ff,#66ccff);color:#fff;box-shadow:0 0 18px rgba(0,180,255,.6);}
+body.light .wa-box{background:rgba(255,255,255,0.6);color:#000;}
+body.light .wa-box::before{opacity:.35;}
+body.light .toast{background:linear-gradient(90deg,#3399ff,#66ccff);color:#fff;}
+
+body::before{content:"";position:fixed;inset:-50%;background:radial-gradient(circle at 20% 30%, rgba(0,255,231,.55), transparent 40%),radial-gradient(circle at 80% 20%, rgba(255,78,205,.55), transparent 45%),radial-gradient(circle at 50% 80%, rgba(106,92,255,.55), transparent 50%);filter:blur(80px);animation:aurora 14s linear infinite;z-index:-2;}
+@keyframes aurora{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+#weatherCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;display:none;z-index:1;}
+
+.qris-note{
+  margin-top:14px;
+  font-size:12.5px;
+  line-height:1.5;
+  color:#ff6b6b;
+  text-align:center;
+  opacity:.95;
+}
+body.light .qris-note{color:#c0392b;}
+</style>
+</head>
+<body>
+
+<div id="modeToggle"><span>🌙</span></div>
+<canvas id="weatherCanvas"></canvas>
+
+<div class="container" id="paymentContainer">
+<div class="title">VINNZTAMVANN</div>
+<div class="desc">PAYMENT VINNZTAMVANN ADA DI BAWAH<br>(WAJIB SCREENSHOT BUKTI TF)</div>
+
+<div class="card">
+<h2>DANA</h2>
+<p>081917650317</p>
+<button class="copy-btn" onclick="copyFix('081917650317', this)">SALIN</button>
+</div>
+
+<div class="card">
+<h2>GOPAY</h2>
+<p>081917650317</p>
+<button class="copy-btn" onclick="copyFix('081917650317', this)">SALIN</button>
+</div>
+
+<div class="card">
+<h2>QRIS</h2>
+<img src="https://files.catbox.moe/3bt8p1.jpg" class="qr-img" onclick="openQR(this)">
+
+<div class="qris-note">
+⚠️ NOTE: JIKA TRANSFER MENGGUNAKAN QRIS MAKA HARUS LEBIH 500P!  
+JIKA TIDAK MAKA ADMIN TIDAK AKAN MERESPON!
+</div>
+</div>
+
+<div class="qr-text">
+Jika sudah transfer silahkan kirim bukti pembayaran ke nomor ini
+</div>
+
+<a class="wa-box" href="https://wa.me/62882005039164?text=Assalamualaikum%2C%20saya%20sudah%20transfer%20dan%20mau%20kirim%20bukti%20pembayaran." target="_blank">
+<h2>💬 CHAT ADMIN SEKARANG</h2>
+<p>Tap untuk langsung WhatsApp</p>
+<strong>62882005039164</strong>
+</a>
+
+<div class="footer">TERIMAKASIH SUDAH BERKUNJUNG ✨</div>
+</div>
+
+<div class="toast" id="toast">Berhasil disalin 🚀</div>
+<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c8e6f5d6f.mp3"></audio>
+
+<script>
+const sound=document.getElementById("clickSound");
+const modeToggle=document.getElementById("modeToggle");
+const canvas=document.getElementById("weatherCanvas");
+const ctx=canvas.getContext("2d");
+let isLight=false;
+let raindrops=[];
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+function createRain(){
+  raindrops=[];
+  for(let i=0;i<2000;i++){
+    let len=Math.random()*12+8;
+    raindrops.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,length:len,speed:Math.random()*15+10,opacity:Math.random()*0.5+0.3});
+  }
+}
+createRain();
+
+let lightningTimer=0;
+let lightnings=[];
+
+function drawWeather(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(!isLight){requestAnimationFrame(drawWeather);return;}
+
+  let wind=5;
+  raindrops.forEach(r=>{
+    ctx.strokeStyle=`rgba(200,220,255,${r.opacity})`;
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(r.x,r.y);
+    ctx.lineTo(r.x+r.length*0.3,r.y+r.length);
+    ctx.stroke();
+    r.x+=wind;r.y+=r.speed;
+    if(r.y>canvas.height){r.y=-r.length;r.x=Math.random()*canvas.width;}
+    if(r.x>canvas.width) r.x=0;
+  });
+
+  lightningTimer++;
+  if(lightningTimer>80){
+    lightningTimer=0;
+    let numPetir=Math.floor(Math.random()*2)+2;
+    for(let p=0;p<numPetir;p++){
+      let lx=Math.random()*canvas.width*0.9;
+      let ly=-20;
+      let segments=30;
+      let path=[];
+      for(let i=0;i<segments;i++){
+        lx+=Math.random()*30-15;
+        ly+=canvas.height/segments;
+        path.push({x:lx,y:ly});
+      }
+      lightnings.push({path:path,alpha:1});
+    }
+  }
+
+  for(let i=lightnings.length-1;i>=0;i--){
+    let l=lightnings[i];
+    ctx.strokeStyle=`rgba(255,255,255,${l.alpha})`;
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.moveTo(l.path[0].x,l.path[0].y);
+    for(let j=1;j<l.path.length;j++) ctx.lineTo(l.path[j].x,l.path[j].y);
+    ctx.stroke();
+    ctx.fillStyle=`rgba(255,255,255,${0.07*l.alpha})`;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    l.alpha-=0.02;
+    if(l.alpha<=0) lightnings.splice(i,1);
+  }
+  requestAnimationFrame(drawWeather);
+}
+drawWeather();
+
+function animateButton(btn){btn.style.transform="scale(0.92)";btn.style.boxShadow="0 0 45px rgba(0,255,255,1)";setTimeout(()=>{btn.style.transform="";btn.style.boxShadow="";},200);}
+function playSound(){sound.currentTime=0;sound.play().catch(()=>{});}
+function copyFix(text, btn){playSound();if(btn) animateButton(btn);if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(showToast).catch(()=>forceCopy(text));}else forceCopy(text);}
+function forceCopy(text){const input=document.createElement("input");input.value=text;document.body.appendChild(input);input.select();document.execCommand("copy");document.body.removeChild(input);showToast();}
+function showToast(){const t=document.getElementById("toast");t.style.opacity=1;setTimeout(()=> t.style.opacity=0,2000);}
+function openQR(img){playSound();const o=document.createElement("div");o.style="position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;justify-content:center;align-items:center;z-index:9999";o.innerHTML=`<img src="${img.src}" style="max-width:92%;max-height:92%;border-radius:24px">`;o.onclick=()=>o.remove();document.body.appendChild(o);}
+
+modeToggle.onclick=()=>{
+  isLight=!isLight;
+  if(isLight){
+    document.body.classList.add("light");
+    canvas.style.display="block";
+    modeToggle.innerHTML='<span>🌩️</span>';
+  }else{
+    document.body.classList.remove("light");
+    canvas.style.display="none";
+    modeToggle.innerHTML='<span>🌙</span>';
+  }
+};
+</script>
+</body>
+</html>
